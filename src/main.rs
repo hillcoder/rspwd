@@ -4,11 +4,11 @@ use rand::Rng;
 fn main() {
     let (args, _rest) = opts! {
         synopsis "Commad line password generation.";
-        opt upper:bool=false, desc:"no upper case";
-        opt lower:bool=false, desc:"no lower case";
-        opt number:bool=false, desc:"no number";
-        opt symbol:bool=false, desc:"no symbol";
-        opt password_len:usize=10,desc:"The number of lines.";
+        opt upper:bool=false, desc:"use upper case";
+        opt lower:bool=false, desc:"use lower case";
+        opt number:bool=false, desc:"use number";
+        opt symbol:bool=false, desc:"use symbol";
+        opt password_len:usize=10,desc:"The number of chars.";
     }.parse_or_exit();
 
     let mut upper=String::from("");
@@ -16,10 +16,10 @@ fn main() {
     let mut number=String::from("");
     let mut symbol=String::from("");
 
-    if !args.upper { upper = String::from("QWERTYUIOPASDFGHJKLZXCVBNM");};
-    if !args.lower { lower = String::from("qwertyuiopasdfghjklzxcvbnm");};
-    if !args.number { number = String::from("1234567890");};
-    if !args.symbol { symbol = String::from("!£$%&()=?^@#:;");};
+    if args.upper { upper = String::from("QWERTYUIOPASDFGHJKLZXCVBNM");};
+    if args.lower { lower = String::from("qwertyuiopasdfghjklzxcvbnm");};
+    if args.number { number = String::from("1234567890");};
+    if args.symbol { symbol = String::from("!£$%&()=?^@#:;");};
 
     let mut total: String="".to_owned();
     total.push_str(&upper);
@@ -27,6 +27,10 @@ fn main() {
     total.push_str(&number);
     total.push_str(&symbol);
         
+    if total.len()==0 {
+        return;
+    }
+
     let mut n = 0;
     let mut rng = rand::thread_rng();
     let mut result:String="".to_owned();
